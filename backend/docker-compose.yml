@@ -6,10 +6,10 @@ services:
     container_name: jotamatera_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root # La misma password que pusiste en Nest
-      MYSQL_DATABASE: JOTAMATERA_DB # La BD se crea sola con este nombre
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_DATABASE:-JOTAMATERA_DB}
     ports:
-      - "4013:3306" # ¡Aca está la magia de los puertos que hablábamos!
+      - "${DB_PORT:-4013}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
