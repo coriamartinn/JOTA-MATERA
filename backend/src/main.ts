@@ -1,13 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe, ConfigService } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: configService.get<string>('CORS_ORIGIN'),
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     credentials: true,
   });
 
@@ -18,6 +17,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(configService.get<number>('PORT') ?? 4015);
+  const port = process.env.PORT ? parseInt(process.env.PORT) : 4015;
+  await app.listen(port);
 }
+
 bootstrap();
