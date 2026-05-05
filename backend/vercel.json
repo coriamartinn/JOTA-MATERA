@@ -1,17 +1,8 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "public": false,
-  "functions": {
-    "src/main.ts": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "src/main.ts"
-    }
-  ]
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
+
