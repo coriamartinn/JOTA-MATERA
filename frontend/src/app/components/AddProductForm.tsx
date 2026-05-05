@@ -19,7 +19,7 @@ interface AddProductFormProps {
   onAdd: (product: Mate) => void;
 }
 
-const REST_URL = "http://localhost:4015/inventory";
+const REST_URL = "https://jota-matera-vopt.vercel.app/inventory";
 
 export function AddProductForm({ onAdd }: AddProductFormProps) {
   const [isOpen, setIsOpen] = useState(false);
