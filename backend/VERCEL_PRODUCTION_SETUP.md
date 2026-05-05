@@ -61,6 +61,7 @@ DB_AUTO_LOAD_ENTITIES → true
 ```
 
 ⚠️ **IMPORTANTE:**
+
 - Las variables de **producción** NO van en Git
 - Vercel las protege automáticamente (🔐 mostrada como "encrypted")
 - Cada deployment usa estas variables
@@ -109,19 +110,25 @@ export const api = axios.create({
 ## 🐛 Troubleshooting
 
 ### Error: "CORS policy blocked"
+
 ✅ **Solución:**
+
 - Verificar `CORS_ORIGIN` en `.env.production`
 - Debe ser: `https://jotamatera.coriadev.com` (SIN trailing slash en Vercel)
 - Hacer redeploy
 
 ### Error: "Cannot connect to database"
+
 ✅ **Solución:**
+
 - Verificar credenciales en Vercel Dashboard
 - Verificar que tu BD permite conexiones desde Vercel (IP whitelisting)
 - Revisar logs en Vercel → Deployments → Logs
 
 ### Frontend dice "API_URL is undefined"
+
 ✅ **Solución:**
+
 - Verificar que frontend tiene `.env.production`
 - Variable debe empezar con `VITE_` (para Vite)
 - Redeploy del frontend
@@ -163,13 +170,15 @@ export const api = axios.create({
 ## 🔒 Seguridad en Producción
 
 ✅ **Hacer:**
+
 - Usar `DB_SYNCHRONIZE=false` (no auto-migrar)
 - Credenciales en Vercel Dashboard (encrypted)
 - CORS solo con dominio del frontend
 - Usar HTTPS (automático en Vercel)
 
 ❌ **NO hacer:**
+
 - Commitear `.env.production` con credenciales reales
 - Usar `DB_SYNCHRONIZE=true` en producción
-- Dejar CORS abierto (origin: '*')
+- Dejar CORS abierto (origin: '\*')
 - Usar contraseñas débiles
