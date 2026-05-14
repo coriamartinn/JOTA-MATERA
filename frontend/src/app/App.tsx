@@ -7,7 +7,7 @@ import {
 } from "./components/utils/types";
 import { createAppRouter } from "./routes";
 
-const REST_URL = "https://jota-matera-vopt.vercel.app/inventory";
+const REST_URL = "https://jota-matera-vopt.vercel.app/";
 
 export default function App() {
   const [products, setProducts] = useState<Mate[]>([]);

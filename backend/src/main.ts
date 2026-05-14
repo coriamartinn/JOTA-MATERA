@@ -6,8 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin:
-      process.env.CORS_ORIGIN || 'https://jotamatera.coriadev.com/inventory',
+    origin: process.env.CORS_ORIGIN || 'https://jotamatera.coriadev.com/',
     credentials: true,
   });
 
