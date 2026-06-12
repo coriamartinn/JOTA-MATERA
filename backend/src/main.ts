@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'https://jotamatera.coriadev.com/',
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   });
 
@@ -18,8 +18,7 @@ async function bootstrap() {
   );
 
   const port = process.env.PORT ? parseInt(process.env.PORT) : 4015;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrap();
-
