@@ -7,7 +7,7 @@ import {
 } from "./components/utils/types";
 import { createAppRouter } from "./routes";
 
-const REST_URL = import.meta.env.REST_URL;
+const URL = import.meta.env.VITE_REST_URL;
 
 export default function App() {
   const [products, setProducts] = useState<Mate[]>([]);
@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${REST_URL}`);
+        const response = await fetch(`${URL}`);
         const data = await response.json();
 
         const mappedProducts = data.map((p: any) => ({
