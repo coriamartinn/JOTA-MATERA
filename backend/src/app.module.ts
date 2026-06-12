@@ -16,11 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
+        url: configService.get<string>('DB_URL'),
         entities: [],
         synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
         autoLoadEntities: configService.get<boolean>('DB_AUTO_LOAD_ENTITIES'),
