@@ -19,7 +19,7 @@ interface AddProductFormProps {
   onAdd: (product: Mate) => void;
 }
 
-const REST_URL = "https://jota-matera-vopt.vercel.app/inventory";
+const URL = import.meta.env.VITE_REST_URL;
 
 export function AddProductForm({ onAdd }: AddProductFormProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +62,7 @@ export function AddProductForm({ onAdd }: AddProductFormProps) {
     };
 
     try {
-      const res = await fetch(`${REST_URL}`, {
+      const res = await fetch(`${URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
