@@ -7,7 +7,7 @@ import {
 } from "./components/utils/types";
 import { createAppRouter } from "./routes";
 
-const REST_URL = import.meta.env.VITE_REST_URL;
+const REST_URL = "https://jota-matera.onrender.com/inventory";
 
 export default function App() {
   const [products, setProducts] = useState<Mate[]>([]);
@@ -32,9 +32,10 @@ export default function App() {
         }));
 
         setProducts(mappedProducts);
-        setLoading(false);
       } catch (e) {
         console.error("Error al conectar con jota matera API", e);
+      } finally {
+        setLoading(false); // ✅ siempre se ejecuta, haya error o no
       }
     };
 
@@ -128,7 +129,6 @@ export default function App() {
         sales: updates.sales,
       };
 
-      // convertir categories → categoryId
       if (updates.categories?.id) {
         payload.categoryId = updates.categories.id;
       }
@@ -158,7 +158,6 @@ export default function App() {
           updates.stock !== product.stock
         ) {
           const difference = updates.stock - product.stock;
-
           const type: StockMovementType = difference > 0 ? "entrada" : "salida";
 
           recordStockMovement(
@@ -223,7 +222,6 @@ export default function App() {
 
   const deleteStockMovement = (movementId: string) => {
     if (!confirm("¿Está seguro de eliminar este movimiento?")) return;
-
     setStockMovements((prev) => prev.filter((m) => m.id !== movementId));
   };
 
