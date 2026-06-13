@@ -7,7 +7,7 @@ import {
 } from "./components/utils/types";
 import { createAppRouter } from "./routes";
 
-const URL = "https://jota-matera.onrender.com/inventory";
+const REST_URL = "https://jota-matera.onrender.com/inventory";
 
 export default function App() {
   const [products, setProducts] = useState<Mate[]>([]);
@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${URL}`);
+        const response = await fetch(`${REST_URL}`);
         const data = await response.json();
 
         const mappedProducts = data.map((p: any) => ({
@@ -75,7 +75,7 @@ export default function App() {
 
   const addProduct = async (newProduct: Omit<Mate, "id">) => {
     try {
-      const response = await fetch(`${URL}`, {
+      const response = await fetch(`${REST_URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default function App() {
         payload.categoryId = updates.categories.id;
       }
 
-      const response = await fetch(`${URL}/${id}`, {
+      const response = await fetch(`${REST_URL}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +187,7 @@ export default function App() {
     if (!confirm("¿Estás seguro de eliminar este producto?")) return;
 
     try {
-      const response = await fetch(`${URL}/${id}`, {
+      const response = await fetch(`${REST_URL}/${id}`, {
         method: "DELETE",
       });
 
