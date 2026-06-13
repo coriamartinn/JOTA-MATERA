@@ -20,7 +20,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         entities: [],
         synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
         autoLoadEntities: configService.get<boolean>('DB_AUTO_LOAD_ENTITIES'),
-        ssl: configService.get<boolean>('DB_SSL_ENABLED'),
+        ssl:
+          configService.get<string>('DB_SSL_ENABLED') === 'true'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
     InventoryModule,
