@@ -75,7 +75,7 @@ export default function App() {
 
   const addProduct = async (newProduct: Omit<Mate, "id">) => {
     try {
-      const response = await fetch(`${REST_URL}`, {
+      const response = await fetch(`${URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default function App() {
         payload.categoryId = updates.categories.id;
       }
 
-      const response = await fetch(`${REST_URL}/${id}`, {
+      const response = await fetch(`${URL}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +187,7 @@ export default function App() {
     if (!confirm("¿Estás seguro de eliminar este producto?")) return;
 
     try {
-      const response = await fetch(`${REST_URL}/${id}`, {
+      const response = await fetch(`${URL}/${id}`, {
         method: "DELETE",
       });
 
