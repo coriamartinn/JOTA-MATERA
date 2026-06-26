@@ -7,7 +7,10 @@ import {
 } from "./components/utils/types";
 import { createAppRouter } from "./routes";
 
-const REST_URL = "https://jota-matera.onrender.com/inventory";
+const REST_URL =
+  import.meta.env.VITE_REST_URL ||
+  import.meta.env.VITE_API_URL ||
+  "https://jota-matera.onrender.com/inventory";
 
 export default function App() {
   const [products, setProducts] = useState<Mate[]>([]);

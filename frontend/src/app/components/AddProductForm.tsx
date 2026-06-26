@@ -19,7 +19,10 @@ interface AddProductFormProps {
   onAdd: (product: Mate) => void;
 }
 
-const URL = import.meta.env.VITE_REST_URL;
+const URL =
+  import.meta.env.VITE_REST_URL ||
+  import.meta.env.VITE_API_URL ||
+  "https://jota-matera.onrender.com/inventory";
 
 export function AddProductForm({ onAdd }: AddProductFormProps) {
   const [isOpen, setIsOpen] = useState(false);
