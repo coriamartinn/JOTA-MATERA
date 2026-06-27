@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_REST_URL ||
+  "https://jota-matera.onrender.com";
 import {
   Mate,
   StockMovement,
@@ -58,22 +63,76 @@ export function AdminPage({
   updateStockMovement,
 }: AdminPageProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [activeTab, setActiveTab] = useState<"productos" | "historial">(
     "productos",
   );
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const storedToken = window.localStorage.getItem("adminToken");
 
-    if (password === "admin123") {
-      setIsAuthenticated(true);
-      setError("");
-    } else {
-      setError("Contraseña incorrecta");
-      setPassword("");
+    if (!storedToken) {
+      return;
+    }
+
+    const verifySession = async () => {
+      try {
+        const response = await fetch(`${API_URL}/auth/admin/verify`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.ok) {
+          setIsAuthenticated(true);
+        } else {
+          window.localStorage.removeItem("adminToken");
+        }
+      } catch (error) {
+        console.error("Error al verificar sesión", error);
+        window.localStorage.removeItem("adminToken");
+      }
+    };
+
+    void verifySession();
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch(`${API_URL}/auth/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.ok) {
+        window.localStorage.setItem("adminToken", data.token);
+        setIsAuthenticated(true);
+        setPassword("");
+      } else {
+        setError("Credenciales inválidas");
+        setPassword("");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión", error);
+      setError("No se pudo conectar con el servidor");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -87,6 +146,13 @@ export function AdminPage({
           <h2 className="text-xl font-bold">Panel Admin</h2>
 
           <Input
+            type="text"
+            placeholder="Usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <Input
             type="password"
             placeholder="Contraseña"
             value={password}
@@ -95,7 +161,9 @@ export function AdminPage({
 
           {error && <p className="text-red-500">{error}</p>}
 
-          <Button type="submit">Ingresar</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Ingresando..." : "Ingresar"}
+          </Button>
         </form>
       </div>
     );
@@ -125,7 +193,13 @@ export function AdminPage({
             </Button>
           </Link>
 
-          <Button onClick={() => setIsAuthenticated(false)} variant="outline">
+          <Button
+            onClick={() => {
+              window.localStorage.removeItem("adminToken");
+              setIsAuthenticated(false);
+            }}
+            variant="outline"
+          >
             Cerrar sesión
           </Button>
         </div>
